@@ -1,14 +1,25 @@
 import React from 'react'
 import { Routes ,Route } from 'react-router-dom'
-import Layout from './pages/Layout'
+import { AuthLayout, GuestLayout } from './pages/Layout'
 import AuthPage from './pages/Authpage'
+import HomePage from './pages/Homepage'
+import BuilderPage from './pages/BuilderPage'
+import PreviewPage from './pages/PreviewPage'
 
 const App = () => {
   return (
 <Routes>
   {/*login routes*/}
-  <Route element = {<Layout/>}>
-  <Route path='/login/'element= {<AuthPage mode="login"/>}/>
+  <Route element = {<GuestLayout/>}>
+  <Route path='/login'element= {<AuthPage mode="login"/>}/>
+  <Route path='/register'element= {<AuthPage mode="register"/>}/>
+  </Route>
+
+  {/*login routes*/}
+  <Route element = {<AuthLayout/>}>
+  <Route path='/'element= {<HomePage/>}/>
+  <Route path='/builder/:id'element= {<BuilderPage/>}/>
+  <Route path='/preview/:id'element= {<PreviewPage/>}/>
 
   </Route>
 </Routes>
