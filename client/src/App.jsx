@@ -2,14 +2,16 @@ import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthLayout } from './pages/Layout'
 import AuthPage from './pages/AuthPage'
-import HomePage from './pages/Homepage'
+import HomePage from './pages/HomePage'
 import BuilderPage from './pages/BuilderPage'
 import PreviewPage from './pages/PreviewPage'
+import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   return (
+    <>
+    <Toaster/>
     <Routes>
-
       {/* Login routes */}
       <Route path="/login" element={<AuthPage mode="login" />} />
       <Route path="/register" element={<AuthPage mode="register" />} />
@@ -24,6 +26,9 @@ const App = () => {
       <Route path="*" element={<Navigate to="/login" replace />} />
 
     </Routes>
+    </>
+
+    
   )
 }
 
