@@ -51,7 +51,7 @@ function TreeItem({ node, activeFile, onFileSelect, depth = 0 }) {
           className='flex items-center gap-2 py-1 px-2 text-xs text-zinc-400 select-none'
           style={{ paddingLeft: `${depth * 12 + 8}px` }}
         >
-          <FolderOpenIcon size={34} className='text-zinc-800 opacity-60' />
+          <FolderOpenIcon size={14} className='text-zinc-800 opacity-60' />
           <span>{node.name}</span>
         </div>
 
