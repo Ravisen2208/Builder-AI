@@ -32,18 +32,23 @@ const BuilderPage = () => {
         logout,
         chatLoading,
         handleChat,
+        user,
+        loadingUser,
     } = useAppContext();
 
-
-    // Load project
+    // Initial project load. Polling for in-progress generation/revision is
+    // handled inside AppContext once `activeProject` exists, but that first
+    // `activeProject` has to come from somewhere — this effect was missing,
+    // so `activeProject` stayed null forever and the page never left Loading.
     useEffect(() => {
         if (!id) return;
-
+        if (loadingUser) return;
+        if (!user) {
+            navigate("/login");
+            return;
+        }
         loadProject(id);
-    }, [id, loadProject]);
-
-
-    // Project polling is already handled inside AppContext.
+    }, [id, user, loadingUser]);
 
 
     const handleOpenPreview = () => {
@@ -57,8 +62,8 @@ const BuilderPage = () => {
         if(!id) return ;
         setPublishing (true)
         try {
-          await api.post(`/api/project/${id}/publish `)
-          const url =` ${window.location.origin}/publish/${id}`;
+          await api.post(`/api/projects/${id}/publish`)
+          const url = `${window.location.origin}/publish/${id}`;
           setPublishUrl(url);
           toast.success("Website puvlished successfully!")
         } catch (err) {
@@ -76,7 +81,7 @@ const BuilderPage = () => {
     };
 
 
-    if (loadingActiveProject || !activeProject) {
+    if (loadingUser || loadingActiveProject || !activeProject) {
         return <Loading />;
     }
 

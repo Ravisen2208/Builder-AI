@@ -128,7 +128,16 @@ export function AppContextProvider({ children }) {
 
     const loadProject = useCallback(
         async (id, silent = false) => {
-            if (!user || !id) return;
+            if (!user || !id) {
+                // Not authenticated yet (or no id) — make sure we don't leave
+                // the caller stuck on a permanent loading state. BuilderPage
+                // now waits for `loadingUser` to resolve before calling this,
+                // but we still guard here defensively.
+                if (!silent) {
+                    setLoadingActiveProject(false);
+                }
+                return;
+            }
 
             if (!silent) {
                 setLoadingActiveProject(true);
@@ -330,7 +339,7 @@ export function AppContextProvider({ children }) {
 
     useEffect(() => {
         return () => {
-            debouncedSave.cancel();
+            debouncedSave.flush();
         };
     }, [debouncedSave]);
 
@@ -377,9 +386,10 @@ export function AppContextProvider({ children }) {
 
                 handleGenerate,
                 handleDelete,
-                handleChat,
-
+            
+                 handleChat,
                 updateProjectFile,
+                
             }}
         >
             {children}
